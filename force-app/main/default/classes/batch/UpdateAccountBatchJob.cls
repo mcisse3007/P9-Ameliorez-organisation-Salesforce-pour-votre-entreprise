@@ -1,11 +1,11 @@
 global class UpdateAccountBatchJob implements Database.Batchable<sObject>{
     
-    / Query initial pour trouver les commandes non validées
+    // Query initial pour trouver les commandes non validées
     global Database.QueryLocator start(Database.BatchableContext bc) {
         return Database.getQueryLocator(
                 'SELECT AccountId, TotalAmount ' +
                         'FROM Order ' +
-                        'WHERE Status != \'Validé\' AND AccountId != null'
+                        'WHERE Status != \'Activated\' AND AccountId != null'
         );
     }
 
@@ -31,7 +31,7 @@ global class UpdateAccountBatchJob implements Database.Batchable<sObject>{
         for (Id accountId : accountRevenueMap.keySet()) {
             accountsToUpdate.add(new Account(
                     Id = accountId,
-                    AnnualRevenue = accountRevenueMap.get(accountId)
+                    Chiffre_d_affaire__c = accountRevenueMap.get(accountId)
             ));
         }
 

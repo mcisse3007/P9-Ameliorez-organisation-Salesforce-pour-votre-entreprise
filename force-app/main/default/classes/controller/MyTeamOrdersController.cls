@@ -6,7 +6,7 @@ public without sharing class MyTeamOrdersController {
     public static Decimal getSumOrdersByAccount(Id accountId) {
          if (!Schema.sObjectType.Order.fields.Status.isAccessible() || 
          !Schema.sObjectType.Order.fields.AccountId.isAccessible() ) {
-            throw new AuraEnabledException('Vous ne pouvez pas acceder aux commandes');
+            throw new AuraHandledException('Vous ne pouvez pas acceder aux commandes');
         }
         AggregateResult groupedResults = [SELECT SUM(TotalAmount) total FROM Order where Status = 'Activated' and AccountId=:accountId];
         return (Decimal)groupedResults.get('total');
