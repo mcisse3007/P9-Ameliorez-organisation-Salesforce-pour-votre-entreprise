@@ -31,7 +31,22 @@ jobs:
       - name: Install SFDX CLI and sfdx-git-delta plugin # Ce package va vous permettre de faire un delta entre votre branche et la branch ciblé. Voici la documentation : https://github.com/scolladon/sfdx-git-delta
         run: |
           npm install -g @salesforce/cli@latest
-          yes |  sfdx plugins:install sfdx-git-delta
+
+
+      - name: 'Install Salesforce CLI'
+        run: |
+            wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+            mkdir ~/sfdx
+            tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+            echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+            ~/sfdx/bin/sfdx version
+
+      - name: Verify Salesforce CLI
+        run: sfdx --version
+
+      - name: Install sfdx-git-delta plugin
+        run: |
+          yes | sfdx plugins:install sfdx-git-delta
 
       - name: 'Populate auth file with DEVHUB_SFDX_URL secret'
         shell: bash
