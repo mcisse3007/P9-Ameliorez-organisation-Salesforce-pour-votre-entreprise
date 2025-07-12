@@ -5,34 +5,29 @@ global class UpdateAccountBatchJob implements Database.Batchable<sObject>{
         return Database.getQueryLocator(
                 'SELECT AccountId, TotalAmount ' +
                         'FROM Order ' +
-                        'WHERE Status != \'Activated\' AND AccountId != null'
+                        'WHERE Status = \'Activated\''
         );
     }
 
     // Traite les commandes par lot
     global void execute(Database.BatchableContext bc, List<Order> orders) {
-        // Map pour regrouper les montants par compte
-        Map<Id, Decimal> accountRevenueMap = new Map<Id, Decimal>();
+       
 
-        for (Order order : orders) {
-            if (order.AccountId != null && order.TotalAmount != null) {
-                // Ajoute le montant au compte correspondant
-                if (!accountRevenueMap.containsKey(order.AccountId)) {
-                    accountRevenueMap.put(order.AccountId, order.TotalAmount);
-                } else {
-                    accountRevenueMap.put(order.AccountId, accountRevenueMap.get(order.AccountId) + order.TotalAmount);
-                }
-            }
+        List<Account> accountsToUpdate = new List<Account>();
+        Set<Id> accountIdSet = new Set<Id>();
+
+        for(Order order: orders){
+            accountIdSet.add(order.AccountId);
         }
 
-        // Liste des comptes à mettre à jour
-        List<Account> accountsToUpdate = new List<Account>();
-
-        for (Id accountId : accountRevenueMap.keySet()) {
-            accountsToUpdate.add(new Account(
-                    Id = accountId,
-                    Chiffre_d_affaire__c = accountRevenueMap.get(accountId)
-            ));
+        Map<Id, Account> accMap = new Map<Id, Account>([SELECT Id, Chiffre_d_affaire__c FROM Account WHERE Id IN :accountIdSet]);
+        
+        for (Order order : orders) {
+            if (order.TotalAmount != 0) {
+                Account acc = accMap.get(order.AccountId);
+                acc.Chiffre_d_affaire__c += order.TotalAmount;
+                accountsToUpdate.add(acc);
+            }
         }
 
         // Mise à jour des comptes

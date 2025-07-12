@@ -58,9 +58,9 @@ jobs:
         run: |
           mkdir -p .temp
           sfdx sgd:source:delta --to "HEAD" --from "origin/main" -o .temp --generate-delta
-          ls .temp
+          cat .temp/package/package.xml
           
       - name: Deploy metadata to Salesforce
         run: |
-     
+         sf project deploy preview -x .temp/package/package.xml -o devhub -l RunLocalTests
          sfdx project deploy start -x .temp/package/package.xml -o devhub -l RunLocalTests
