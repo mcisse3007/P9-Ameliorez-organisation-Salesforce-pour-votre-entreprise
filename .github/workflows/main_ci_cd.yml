@@ -62,4 +62,4 @@ jobs:
           
       - name: Deploy metadata to Salesforce
         run: |
-         sfdx project deploy start -x .temp/package/package.xml -o devhub -l RunLocalTests
+         sfdx project deploy start -o devhub -l RunLocalTests

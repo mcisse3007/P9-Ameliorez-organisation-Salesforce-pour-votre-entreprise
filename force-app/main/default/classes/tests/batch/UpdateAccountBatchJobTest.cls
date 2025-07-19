@@ -4,11 +4,12 @@ private class UpdateAccountBatchJobTest {
     @isTest
     static void testBatch() {
         // Création de comptes
-        List<Account> accounts = TestDataFactory.createMultipleAccounts(2);
+        List<Account> accounts = TestDataFactory.createMultipleAccounts(3);
         Account acc1 = accounts[0];
         Account acc2 = accounts[1];
+        Account acc3 = accounts[2];
 
-        TestDataFactory.createOrdersAddItemsAndActivate(acc1, acc2);
+        TestDataFactory.createOrdersAddItemsAndActivate(acc1, acc2, acc3);
 
         // Exécution du batch
         UpdateAccountBatchJob batch = new UpdateAccountBatchJob();

@@ -32,11 +32,12 @@ private class AccountTotalOrderControllerTest {
 
     @isTest
     static void testGetSumOrdersByAccount_WithValidAccountAndOrders() {
-        List<Account> accounts = TestDataFactory.createMultipleAccounts(2);
+        List<Account> accounts = TestDataFactory.createMultipleAccounts(3);
         Account acc1 = accounts[0];
         Account acc2 = accounts[1];
+        Account acc3 = accounts[2];
 
-        TestDataFactory.createOrdersAddItemsAndActivate(acc1, acc2);
+        TestDataFactory.createOrdersAddItemsAndActivate(acc1, acc2,acc3);
         Decimal expected1 = (2 * 150) + (1 * 100) + (5 * 25);
         // Act: Invoke the method
         Decimal totalOrderSumAcc1 = AccountTotalOrderController.getSumOrdersByAccount(acc1.Id);

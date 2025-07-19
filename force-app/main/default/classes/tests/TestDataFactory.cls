@@ -131,7 +131,7 @@ public with sharing class TestDataFactory {
         return orders;
     }
 
-    public static void createOrdersAddItemsAndActivate(Account acc1, Account acc2) {
+    public static void createOrdersAddItemsAndActivate(Account acc1, Account acc2, Account acc3) {
         // Création d'un produit et d'une entrée Pricebook
         Product2 product = TestDataFactory.createProduct('Test Product');
         PricebookEntry pbe = TestDataFactory.createPricebookEntry(product, 100);
@@ -145,6 +145,11 @@ public with sharing class TestDataFactory {
             new Order(AccountId = acc2.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id),
             new Order(AccountId = acc1.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id)
         };
+        
+        // on ajoute 100 commandes a l'account 3
+        for(Integer i=0; i<100; i++){
+            orders.add(new Order(AccountId = acc3.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id));
+        }
         insert orders;
 
         
@@ -157,6 +162,10 @@ public with sharing class TestDataFactory {
             new OrderItem(OrderId = orders[3].Id, PricebookEntryId = pbe.Id, Quantity = 4, UnitPrice = 50),
             new OrderItem(OrderId = orders[4].Id, PricebookEntryId = pbe.Id, Quantity = 5, UnitPrice = 25)
         };
+
+        for(Integer i=0; i<100; i++){
+            items.add(new OrderItem(OrderId = orders[i + 5].Id, PricebookEntryId = pbe.Id, Quantity = 1, UnitPrice = 100));
+        }
         insert items;
 
         for (Order order : orders) {

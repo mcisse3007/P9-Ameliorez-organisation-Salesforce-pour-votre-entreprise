@@ -20,7 +20,7 @@
  * See the Apex Language Reference for more information about Testing and Code Coverage.
  */
 @isTest
-private class CalculMontantTriggerTest {
+private class AmountSumTriggerTest {
 
       /**
      * Test case: Validate that NetAmount__c is calculated correctly

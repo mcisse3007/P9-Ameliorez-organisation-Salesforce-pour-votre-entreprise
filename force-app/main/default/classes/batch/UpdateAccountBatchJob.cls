@@ -5,7 +5,7 @@ global class UpdateAccountBatchJob implements Database.Batchable<sObject>{
         return Database.getQueryLocator(
                 'SELECT AccountId, TotalAmount ' +
                         'FROM Order ' +
-                        'WHERE Status = \'Activated\' and ActivatedDate= TODAY'
+                        'WHERE Status = \'Activated\''
         );
     }
 

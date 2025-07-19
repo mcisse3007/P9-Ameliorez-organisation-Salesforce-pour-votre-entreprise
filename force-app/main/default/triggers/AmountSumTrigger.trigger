@@ -1,4 +1,4 @@
-trigger CalculMontant on Order (before update) {
+trigger AmountSumTrigger on Order (before update) {
 
 	// Parcourt toutes les commandes dans l'opération de mise à jour
 	for (Order newOrder : Trigger.new) {
