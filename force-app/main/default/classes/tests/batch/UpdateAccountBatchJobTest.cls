@@ -8,30 +8,8 @@ private class UpdateAccountBatchJobTest {
         Account acc1 = accounts[0];
         Account acc2 = accounts[1];
 
-        // Création d'un produit et d'une entrée Pricebook
-        Product2 product = TestDataFactory.createProduct('Test Product');
-        PricebookEntry pbe = TestDataFactory.createPricebookEntry(product, 100);
+        TestDataFactory.createOrdersAddItemsAndActivate(acc1, acc2);
 
-        // Création de commandes liées aux comptes
-        // Création de commandes en statut "Draft" pour les comptes
-        List<Order> orders = new List<Order>{
-            new Order(AccountId = acc1.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id),
-            new Order(AccountId = acc2.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id),
-            new Order(AccountId = acc1.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id),
-            new Order(AccountId = acc2.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id),
-            new Order(AccountId = acc1.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id)
-        };
-        insert orders;
-
-        // Ajout d'OrderItems avec quantités et prix unitaires personnalisés
-        List<OrderItem> items = new List<OrderItem>{
-            new OrderItem(OrderId = orders[0].Id, PricebookEntryId = pbe.Id, Quantity = 2, UnitPrice = 150),
-            new OrderItem(OrderId = orders[1].Id, PricebookEntryId = pbe.Id, Quantity = 3, UnitPrice = 200),
-            new OrderItem(OrderId = orders[2].Id, PricebookEntryId = pbe.Id, Quantity = 1, UnitPrice = 100),
-            new OrderItem(OrderId = orders[3].Id, PricebookEntryId = pbe.Id, Quantity = 4, UnitPrice = 50),
-            new OrderItem(OrderId = orders[4].Id, PricebookEntryId = pbe.Id, Quantity = 5, UnitPrice = 25)
-        };
-        insert items;
         // Exécution du batch
         UpdateAccountBatchJob batch = new UpdateAccountBatchJob();
         Database.executeBatch(batch);

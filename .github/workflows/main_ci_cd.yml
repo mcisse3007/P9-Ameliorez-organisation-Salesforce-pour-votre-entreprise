@@ -3,7 +3,7 @@ name: Deploy and Validate Metadata
 on:
   pull_request:
     branches:
-      - main
+      - master
 
   push:
     branches:
@@ -37,7 +37,7 @@ jobs:
 
       - name: Install sfdx-git-delta plugin
         run: |
-          yes | sfdx plugins:install sfdx-git-delta
+          echo y | sf plugins install sfdx-git-delta
 
       - name: 'Populate auth file with DEVHUB_SFDX_URL secret'
         shell: bash
@@ -57,10 +57,9 @@ jobs:
       - name: Generate metadata delta using sfdx-git-delta
         run: |
           mkdir -p .temp
-          sfdx sgd:source:delta --to "HEAD" --from "origin/main" -o .temp --generate-delta
+          sf sgd source delta --to "HEAD" --from "origin/main" -o .temp --generate-delta
           cat .temp/package/package.xml
           
       - name: Deploy metadata to Salesforce
         run: |
-         sf project deploy preview -x .temp/package/package.xml -o devhub -l RunLocalTests
          sfdx project deploy start -x .temp/package/package.xml -o devhub -l RunLocalTests
