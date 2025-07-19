@@ -1,8 +1,8 @@
-public without sharing class MyTeamOrdersController {
+public with sharing class AccountTotalOrderController {
     
     // TODO - Corriger l'erreur ici, nous retournons le montant TOTAL de tous les "Orders" 
     // mais nous souhaitons retourner le montant TOTAL des orders  aux status = 'Activated' du compte sur lequel le composant LWC se situe
-    @AuraEnabled
+    @AuraEnabled(cacheable = true)
     public static Decimal getSumOrdersByAccount(Id accountId) {
          if (!Schema.sObjectType.Order.fields.Status.isAccessible() || 
          !Schema.sObjectType.Order.fields.AccountId.isAccessible() ) {

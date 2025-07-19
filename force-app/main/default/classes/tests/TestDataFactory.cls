@@ -3,7 +3,8 @@ public with sharing class TestDataFactory {
     // Méthode pour créer un compte de test 
     public static Account createAccount(String accountName) {
         Account account = new Account(
-            Name = accountName
+            Name = accountName,
+            TypeClient__c='Particulier'
         );  
         try {
             insert account;
@@ -54,7 +55,8 @@ public with sharing class TestDataFactory {
             AccountId = account.Id,
             EffectiveDate = Date.today(),
             Status = 'Draft',
-            Pricebook2Id = priceEntry.Pricebook2Id
+            Pricebook2Id = priceEntry.Pricebook2Id,
+            ShipmentCost__c=620
         );
         try {
             insert order;
@@ -69,6 +71,7 @@ public with sharing class TestDataFactory {
             PricebookEntryId = priceEntry.Id,
             Quantity = 1,
             UnitPrice = priceEntry.UnitPrice
+            
         );
         try {
             insert orderItem;
@@ -87,7 +90,9 @@ public with sharing class TestDataFactory {
         List<Account> accounts = new List<Account>();
         for (Integer i = 0; i < numberOfAccounts; i++) {
             Account account = new Account(
-                Name = 'Test Account ' + i
+                Name = 'Test Account ' + i,
+               TypeClient__c='Particulier'
+
             );
             accounts.add(account);
         }
@@ -124,5 +129,39 @@ public with sharing class TestDataFactory {
         insert orderItems;
 
         return orders;
+    }
+
+    public static void createOrdersAddItemsAndActivate(Account acc1, Account acc2) {
+        // Création d'un produit et d'une entrée Pricebook
+        Product2 product = TestDataFactory.createProduct('Test Product');
+        PricebookEntry pbe = TestDataFactory.createPricebookEntry(product, 100);
+
+        // Création de commandes liées aux comptes
+        // Création de commandes en statut "Draft" pour les comptes
+        List<Order> orders = new List<Order>{
+            new Order(AccountId = acc1.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id),
+            new Order(AccountId = acc2.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id),
+            new Order(AccountId = acc1.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id),
+            new Order(AccountId = acc2.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id),
+            new Order(AccountId = acc1.Id, Status = 'Draft', EffectiveDate = Date.today(), Pricebook2Id = pbe.Pricebook2Id)
+        };
+        insert orders;
+
+        
+
+        // Ajout d'OrderItems avec quantités et prix unitaires personnalisés
+        List<OrderItem> items = new List<OrderItem>{
+            new OrderItem(OrderId = orders[0].Id, PricebookEntryId = pbe.Id, Quantity = 2, UnitPrice = 150),
+            new OrderItem(OrderId = orders[1].Id, PricebookEntryId = pbe.Id, Quantity = 3, UnitPrice = 200),
+            new OrderItem(OrderId = orders[2].Id, PricebookEntryId = pbe.Id, Quantity = 1, UnitPrice = 100),
+            new OrderItem(OrderId = orders[3].Id, PricebookEntryId = pbe.Id, Quantity = 4, UnitPrice = 50),
+            new OrderItem(OrderId = orders[4].Id, PricebookEntryId = pbe.Id, Quantity = 5, UnitPrice = 25)
+        };
+        insert items;
+
+        for (Order order : orders) {
+            order.Status = 'Activated';
+        }
+        update orders;
     }
 }
