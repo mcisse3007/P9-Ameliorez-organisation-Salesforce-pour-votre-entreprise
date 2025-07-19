@@ -1,0 +1,42 @@
+
+
+=== Test Results
+TEST NAME                                                                            OUTCOME  MESSAGE  RUNTIME (MS)
+───────────────────────────────────────────────────────────────────────────────────  ───────  ───────  ────────────
+UpdateAccountBatchJobTest.testBatch                                                  Pass              4864        
+AccountTotalOrderControllerTest.testGetSumOrdersByAccount_WithNoOrders               Pass              346         
+AccountTotalOrderControllerTest.testGetSumOrdersByAccount_WithValidAccountAndOrders  Pass              2865        
+CalculMontantTriggerTest.testNetAmountCalculation                                    Pass              3525        
+CalculMontantTriggerTest.testNetAmountNullWhenInputsNull                             Pass              725         
+CalculMontantTriggerTest.testNetAmountNullWhenShipmentCostIsNull                     Pass              801         
+OrderHandlerTest.testUpdateAccountRevenue                                            Pass              5146        
+
+
+=== Apex Code Coverage by Class
+CLASSES                      PERCENT  UNCOVERED LINES  
+───────────────────────────  ───────  ─────────────────
+TestDataFactory              71%      11,13,26,28,45...
+UpdateAccountBatchJob        100%                      
+OrderHandler                 100%                      
+CalculMontant                100%                      
+UpdateAccountCA              100%                      
+AccountTotalOrderController  83%      9                
+AmountSumTrigger             100%                      
+
+
+=== Test Summary
+NAME                 VALUE                                 
+───────────────────  ──────────────────────────────────────
+Outcome              Passed                                
+Tests Ran            7                                     
+Pass Rate            100%                                  
+Fail Rate            0%                                    
+Skip Rate            0%                                    
+Test Run Id          707WU00000XFXan                       
+Test Setup Time      0 ms                                  
+Test Execution Time  18272 ms                              
+Test Total Time      18272 ms                              
+Org Id               00DWU00000GywmO2AR                    
+Username             mamadou.cisse@ag2rlamondiale.trailhead
+Org Wide Coverage    57%                                   
+
