@@ -26,6 +26,9 @@ global class UpdateAccountBatchJob implements Database.Batchable<sObject>{
             if (order.TotalAmount != 0) {
                 Account acc = accMap.get(order.AccountId);
                 acc.Chiffre_d_affaire__c += order.TotalAmount;
+                if(accountsToUpdate.contains(acc)){
+                    accountsToUpdate.remove(accountsToUpdate.indexOf(acc));
+                }
                 accountsToUpdate.add(acc);
             }
         }
